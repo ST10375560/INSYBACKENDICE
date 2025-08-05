@@ -1,5 +1,7 @@
 import express from 'express'; 
 import dotenv from 'dotenv';
+import fs from 'fs';
+import https from 'https';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -17,10 +19,21 @@ app.get('/', (req, res) => {
 
 });
 
-//Start server
-app.listen(PORT, () => {
+//use mkcert-generated certificates for https
+const sslOptions = {
+    key: fs.readFileSync('./certs/localhost-key.pem'),
+    cert: fs.readFileSync('./certs/localhost.pem')
+}
+
+//HTTPS Server
+https.createServer(sslOptions, app).listen(PORT, () => {
+    console.log(`HTTPS Server is running on port ${PORT}`);
+})
+
+// Start server
+ app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
-});
+ });
 
 
 
