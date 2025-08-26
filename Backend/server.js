@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import https from 'https';
 import mongoose from 'mongoose';
+import routes from './routes/index.js';  
 
 // Load environment variables from .env file
 dotenv.config();
@@ -15,11 +16,9 @@ const MONGODB_URI = 'mongodb://localhost:27017'
 //middleware to parse JSON bodies
 app.use(express.json());
 
-//Add basic route
-app.get('/', (req, res) => {
-    res.send ('Welcome to the PhotoShare API')
+//Routes
+app.use('/api', routes);
 
-});
 
 // use mkcertificates for HTTPs
 const ssloptions = {
